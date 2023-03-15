@@ -9,5 +9,6 @@ h2 {
 
 nav li {
 	display: inline-block;
+	list-style-type: none;
 }
 
