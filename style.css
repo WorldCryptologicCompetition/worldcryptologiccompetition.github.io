@@ -21,6 +21,11 @@ nav li {
 	list-style-type: none;
 }
 
+table {
+	margin-left: auto;
+	margin-right: auto;
+}
+
 ol.ruleList {
 	list-style-type: none;
 }
