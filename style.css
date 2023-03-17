@@ -26,6 +26,10 @@ table {
 	margin-right: auto;
 }
 
+table tr .currentPhase {
+	background-color: lightblue;
+}
+
 ol.ruleList {
 	list-style-type: none;
 }
