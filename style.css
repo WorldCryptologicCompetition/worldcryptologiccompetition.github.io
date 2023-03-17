@@ -30,7 +30,7 @@ table {
 	margin-right: auto;
 }
 
-table tr .currentPhase {
+tr.currentPhase {
 	background-color: lightblue;
 }
 
