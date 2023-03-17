@@ -1,3 +1,8 @@
+
+#include <inttypes.h>
+#include <stdint.h>
+#include <stdbool.h>
+
 /*
  * SHA512.h
  *
@@ -13,7 +18,7 @@
  *            a) char * rawInput
  *            b) uint64_t numberOfInputBits
  *            c) uint64_t output[8]
- *     3) void entry_[Entry Name]_produceDigest()
+ *     3) void entry_[Entry Name]_produceDigest(struct entry_SHA512_state * const state)
  *
  */
 
@@ -71,8 +76,7 @@ void entry_SHA512_produceDigest(struct entry_SHA512_state * const state)
                 h[i] = h_init[i];
         }
 
-  // Padding...
-
+        // Padding...
         for each chunk {
 
                 for (i = 0; i < ENTRY_SHA512_NUMBER_OF_CHUNK_WORDS; i++) {
@@ -111,6 +115,7 @@ void entry_SHA512_produceDigest(struct entry_SHA512_state * const state)
                         v[0] = temp1 + temp2;
 
                 }
+
                 for (i = 0; i < ENTRY_SHA512_NUMBER_OF_STATE_WORDS; i++) {
                         h[i] += v[i];
                 }
