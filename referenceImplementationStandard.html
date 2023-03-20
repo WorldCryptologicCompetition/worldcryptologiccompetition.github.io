@@ -1,4 +1,3 @@
-
 <html>
 <head>
 	<title>World Cryptologic Competition</title>
@@ -31,15 +30,50 @@
 		</nav>
 	</header>
 	<section>
-		<p>
-			The reference implementation standard differs slightly between the three entry categories.
-		<p>
-			https://github.dev/WorldCryptologicCompetition/worldcryptologiccompetition.github.io/blob/master/examples/SHA512.h
-		</p>
+		The reference implementation standard differs slightly between the three entry categories. In the below table, "EN" is the unique Entry Name of your entry, without spaces.
+		<table>
+			<thead>
+				<tr><th>Requirement</th><th>Category</th><th>Requirement</th></tr>
+			</thead>
+			<tbody>
+				<tr><td>A.1</td><td>Category A (Block Ciphers)</td><td><code>#define ENTRY_EN_[whatever is needed]</code></td></tr>
+				<tr><td>A.2</td><td>Category A (Block Ciphers)</td><td><code>struct entry_EN_state</code> member <code>uint64_t key[8]</code></td></tr>
+				<tr><td>A.3</td><td>Category A (Block Ciphers)</td><td><code>struct entry_EN_state</code> member <code>uint64_t nonce[3]</code></td></tr>
+				<tr><td>A.4</td><td>Category A (Block Ciphers)</td><td><code>struct entry_EN_state</code> member <code>uint64_t plaintext[8]</code></td></tr>
+				<tr><td>A.5</td><td>Category A (Block Ciphers)</td><td><code>struct entry_EN_state</code> member <code>uint64_t ciphertext[8]</code></td></tr>
+				<tr><td>A.6</td><td>Category A (Block Ciphers)</td><td><code>void entry_EN_ENC(struct entry_EN_state * const state)</td></tr>
+				<tr><td>A.7</td><td>Category A (Block Ciphers)</td><td><code>void entry_EN_DEC(struct entry_EN_state * const state)</td></tr>
+				<tr><td colspan="3"><hr></td></tr>
+				<tr><td>B.1</td><td>Category B (Digest Functions)</td><td><code>#define ENTRY_EN_[whatever is needed]</code></td></tr>
+				<tr><td>B.2</td><td>Category B (Digest Functions)</td><td><code>struct entry_EN_state</code> member <code>uint64_t key[8]</code></td></tr>
+				<tr><td>B.3</td><td>Category B (Digest Functions)</td><td><code>struct entry_EN_state</code> member <code>uint64_t nonce[3]</code></td></tr>
+				<tr><td>B.4</td><td>Category B (Digest Functions)</td><td><code>struct entry_EN_state</code> member <code>char * rawInput</code></td></tr>
+				<tr><td>B.5</td><td>Category B (Digest Functions)</td><td><code>struct entry_EN_state</code> member <code>uint64_t numberOfInputBits</code></td></tr>
+				<tr><td>B.6</td><td>Category B (Digest Functions)</td><td><code>struct entry_EN_state</code> member <code>uint64_t output[8]</code></td></tr>
+				<tr><td>B.7</td><td>Category B (Digest Functions)</td><td><code>void entry_EN_produceDigest(struct entry_EN_state * const state)</td></tr>
+				<tr><td colspan="3"><hr></td></tr>
+				<tr><td>C.1</td><td>Category C (Stream Ciphers)</td><td><code>#define ENTRY_EN_[whatever is needed]</code></td></tr>
+				<tr><td>C.2</td><td>Category C (Stream Ciphers)</td><td><code>struct entry_EN_state</code> member <code>uint64_t key[8]</code></td></tr>
+				<tr><td>C.3</td><td>Category C (Stream Ciphers)</td><td><code>struct entry_EN_state</code> member <code>uint64_t nonce[3]</code></td></tr>
+				<tr><td>C.3</td><td>Category C (Stream Ciphers)</td><td><code>struct entry_EN_state</code> member <code>uint64_t outputStreamLengthInBits</code></td></tr>
+				<tr><td>C.3</td><td>Category C (Stream Ciphers)</td><td><code>struct entry_EN_state</code> member <code>uint64_t *outputStream</code></td></tr>
+				<tr><td>B.7</td><td>Category C (Stream Ciphers)</td><td><code>void entry_EN_produceStream(struct entry_EN_state * const state)</td></tr>
+			</tbody>
+		</table>
+		<h3>Examples</h3>
+		<table>
+			<thead>
+				<tr><th>Example</th><th>Link</th></tr>
+			</thead>
+			<tbody>
+				<tr><td>"ToyBlockCipher" as a Category A Entry in WCC 2023</td><td><a href='examples/ToyBlockCipher.h'>examples/ToyBlockCipher.h</a></td></tr>
+				<tr><td>SHA-2-512 as a Category B Entry in WCC 2023</td><td><a href='examples/SHA512.h'>examples/SHA512.h</a></td></tr>
+				<tr><td>"ToyStreamCipher" as a Category C Entry in WCC 2023</td><td><a href='examples/ToyStreamCipher.h'>examples/ToyStreamCipher.h</a></td></tr>
+			</tbody>
+		</table>
 	</section>
 	<footer>
 		&copy; World Cryptologic Competition (2023)
 	</footer>
 </body>
 </html>
-
