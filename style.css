@@ -84,6 +84,7 @@ a.cashappPaymentLink {
 	color: #ffffff;
 	min-width: 212px;
 	background-color: rgb(0, 200, 83);
+	font-family: cash-market-rounded, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
 	text-align: center;
 	box-shadow: 0 0 0 1px rgba(0,0,0,.1) inset;
 	border-radius: 6px;
