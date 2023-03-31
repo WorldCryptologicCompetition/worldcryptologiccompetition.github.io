@@ -76,6 +76,19 @@ a.squarePaymentLink {
 	border-radius: 6px;
 }
 
+a.cashappPaymentLink {
+	display: inline-block;
+	font-size: 18px;
+	line-height: 48px;
+	height: 48px;
+	color: #ffffff;
+	min-width: 212px;
+	background-color: rgb(0, 200, 83);
+	text-align: center;
+	box-shadow: 0 0 0 1px rgba(0,0,0,.1) inset;
+	border-radius: 6px;
+}
+
 tr.currentPhase {
 	background-color: lightblue;
 }
