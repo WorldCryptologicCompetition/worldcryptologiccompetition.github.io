@@ -68,7 +68,7 @@ a.coinbasePaymentLink{
 	font-size: 18px;
 	line-height: 48px;
 	height: 48px;
-	color: #ffffff;
+	color: white;
 	min-width: 212px;
 	background: #1652f0 linear-gradient(#1652f0, #0655ab);
 	text-align: center;
@@ -79,12 +79,25 @@ a.coinbasePaymentLink{
 	border-radius: 6px;
 }
 
+a.bitpayPaymentLink {
+	display: inline-block;
+	font-size: 18px;
+	line-height: 48px;
+	height: 48px;
+	color: white;
+	min-width: 212px;
+	background-color: rgb(31, 58, 179);
+	text-align: center;
+	box-shadow: 0 0 0 1px rgba(0,0,0,.1) inset;
+	border-radius: 6px;
+}
+
 a.squarePaymentLink {
 	display: inline-block;
 	font-size: 18px;
 	line-height: 48px;
 	height: 48px;
-	color: #ffffff;
+	color: white;
 	min-width: 212px;
 	background-color: #006aff;
 	text-align: center;
@@ -97,7 +110,7 @@ a.cashappPaymentLink {
 	font-size: 18px;
 	line-height: 48px;
 	height: 48px;
-	color: #ffffff;
+	color: white;
 	min-width: 212px;
 	background-color: rgb(0, 200, 83);
 	font-family: cash-market-rounded, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
