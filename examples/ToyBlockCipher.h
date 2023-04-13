@@ -29,7 +29,7 @@ struct entry_TBC_state
 void entry_TBC_runKeySchedule(struct entry_TBC_state * const state)
 {
     static const uint8_t rotations[5][2] = {
-        {8, 16}, {4, 5} {7, 13}, {41, 19}, {8, 32}
+        {8, 16}, {4, 5}, {7, 13}, {41, 19}, {8, 32}
     };
 
     static const uint8_t indices[5][2] = {
