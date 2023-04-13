@@ -117,12 +117,12 @@ void entry_TBC_DEC(struct entry_TBC_state * const state)
     keyWordIdx = 0;
     for (roundIdx = 0; roundIdx < ENTRY_TBC_NUMBER_OF_ROUNDS; roundIdx++) {
         for (blockWordIdx = 1; blockWordIdx < 8; blockWordIdx += 2) {
-            state->ciphertext[blockWordIdx] -= state->ciphertext[blockWordIdx + 1] + state->keySchedule[keyWordIdx]; keyWordIdx++; keyWordIdx %= 13;
-            state->ciphertext[blockWordIdx]  = ROR64(state->ciphertext[blockWordIdx], rotations[blockWordIdx]);
+            state->plaintext[blockWordIdx] -= state->plaintext[blockWordIdx + 1] + state->keySchedule[keyWordIdx]; keyWordIdx++; keyWordIdx %= 13;
+            state->plaintext[blockWordIdx]  = ROR64(state->plaintext[blockWordIdx], rotations[blockWordIdx]);
         }
         for (blockWordIdx = 0; blockWordIdx < 8; blockWordIdx += 2) {
-            state->ciphertext[blockWordIdx] -= state->ciphertext[blockWordIdx + 1] + state->keySchedule[keyWordIdx]; keyWordIdx++; keyWordIdx %= 13;
-            state->ciphertext[blockWordIdx]  = ROR64(state->ciphertext[blockWordIdx], rotations[blockWordIdx]);
+            state->plaintext[blockWordIdx] -= state->plaintext[blockWordIdx + 1] + state->keySchedule[keyWordIdx]; keyWordIdx++; keyWordIdx %= 13;
+            state->plaintext[blockWordIdx]  = ROR64(state->plaintext[blockWordIdx], rotations[blockWordIdx]);
         }
     }
 
