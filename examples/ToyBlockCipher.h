@@ -26,6 +26,15 @@ struct entry_TBC_state
     uint64_t keySchedule[13];   /* 832 bits */
 };
 
+void entry_TBC_util_reverseKeyIdx(uint_fast8_t * const idx)
+{
+	if ((*idx) == 0) {
+		(*idx) = 12;
+	} else {
+		(*idx)--;
+	}
+}
+
 void entry_TBC_runKeySchedule(struct entry_TBC_state * const state)
 {
     static const uint8_t rotations[5][2] = {
@@ -114,16 +123,32 @@ void entry_TBC_DEC(struct entry_TBC_state * const state)
         state->plaintext[blockWordIdx] = state->ciphertext[blockWordIdx] ^ state->key[blockWordIdx];
     }
 
-    keyWordIdx = 0;
+    keyWordIdx = ((ENTRY_TBC_NUMBER_OF_ROUNDS * 8) - 1) % 13;
     for (roundIdx = 0; roundIdx < ENTRY_TBC_NUMBER_OF_ROUNDS; roundIdx++) {
-        for (blockWordIdx = 1; blockWordIdx < 8; blockWordIdx += 2) {
-            state->plaintext[blockWordIdx] -= state->plaintext[blockWordIdx + 1] + state->keySchedule[keyWordIdx]; keyWordIdx++; keyWordIdx %= 13;
-            state->plaintext[blockWordIdx]  = ROR64(state->plaintext[blockWordIdx], rotations[blockWordIdx]);
-        }
-        for (blockWordIdx = 0; blockWordIdx < 8; blockWordIdx += 2) {
-            state->plaintext[blockWordIdx] -= state->plaintext[blockWordIdx + 1] + state->keySchedule[keyWordIdx]; keyWordIdx++; keyWordIdx %= 13;
-            state->plaintext[blockWordIdx]  = ROR64(state->plaintext[blockWordIdx], rotations[blockWordIdx]);
-        }
+	    state->plaintext[7]  = ROR64(state->plaintext[7], rotations[7]);
+	    state->plaintext[7] -= (state->plaintext[0] + state->keySchedule[keyWordIdx]); entry_TBC_util_reverseKeyIdx(&keyWordIdx);
+
+	    state->plaintext[5]  = ROR64(state->plaintext[5], rotations[5]);
+	    state->plaintext[5] -= (state->plaintext[6] + state->keySchedule[keyWordIdx]); entry_TBC_util_reverseKeyIdx(&keyWordIdx);
+
+	    state->plaintext[3]  = ROR64(state->plaintext[3], rotations[3]);
+	    state->plaintext[3] -= (state->plaintext[4] + state->keySchedule[keyWordIdx]); entry_TBC_util_reverseKeyIdx(&keyWordIdx);
+
+	    state->plaintext[1]  = ROR64(state->plaintext[1], rotations[1]);
+	    state->plaintext[1] -= (state->plaintext[2] + state->keySchedule[keyWordIdx]); entry_TBC_util_reverseKeyIdx(&keyWordIdx);
+
+
+	    state->plaintext[6]  = ROR64(state->plaintext[6], rotations[6]);
+	    state->plaintext[6] -= (state->plaintext[7] + state->keySchedule[keyWordIdx]); entry_TBC_util_reverseKeyIdx(&keyWordIdx);
+
+	    state->plaintext[4]  = ROR64(state->plaintext[4], rotations[4]);
+	    state->plaintext[4] -= (state->plaintext[5] + state->keySchedule[keyWordIdx]); entry_TBC_util_reverseKeyIdx(&keyWordIdx);
+
+	    state->plaintext[2]  = ROR64(state->plaintext[2], rotations[2]);
+	    state->plaintext[2] -= (state->plaintext[3] + state->keySchedule[keyWordIdx]); entry_TBC_util_reverseKeyIdx(&keyWordIdx);
+
+	    state->plaintext[0]  = ROR64(state->plaintext[0], rotations[0]);
+	    state->plaintext[0] -= (state->plaintext[1] + state->keySchedule[keyWordIdx]); entry_TBC_util_reverseKeyIdx(&keyWordIdx);
     }
 
     for (blockWordIdx = 0; blockWordIdx < 8; blockWordIdx++) {
