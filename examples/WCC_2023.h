@@ -11,12 +11,12 @@
 
 uint64_t ROL64(uint64_t word, const uint8_t rotation)
 {
-    return ((word << rotation) | (word >> (64 - rotation));
+    return ((word << rotation) | (word >> (64 - rotation)));
 }
             
 uint64_t ROR64(uint64_t word, const uint8_t rotation)
 {
-    return ((word >> rotation) | (word << (64 - rotation));
+    return ((word >> rotation) | (word << (64 - rotation)));
 }
             
             
