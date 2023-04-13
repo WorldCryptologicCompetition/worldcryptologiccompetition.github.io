@@ -1,4 +1,7 @@
 
+#ifndef __WCC_2023_HEADER__
+#define __WCC_2023_HEADER__ 
+
 /*
  * WCC_2023.h
  *
@@ -20,3 +23,4 @@ uint64_t ROR64(uint64_t word, const uint8_t rotation)
 }
             
             
+#endif
