@@ -1,1 +1,140 @@
 
+#include <inttypes.h>
+#include <stdint.h>
+#include <stdbool.h>
+
+#include <stdio.h>
+
+#include "WCC_2023.h"
+
+/*
+ * ToyBlockCipher.c (TBC)
+ *
+ *     Entry Name: "TBC"
+ *
+ */
+
+#define ENTRY_TBC_NUMBER_OF_ROUNDS 255
+
+struct entry_TBC_state
+{
+    uint64_t key[8];        /* Requirement A.2 */
+    uint64_t nonce[3];      /* Requirement A.3 */
+    uint64_t plaintext[8];  /* Requirement A.4 */
+    uint64_t ciphertext[8]; /* Requirement A.5 */
+    // then, any additional members ...
+    uint64_t keySchedule[13];   /* 832 bits */
+};
+
+void entry_TBC_runKeySchedule(struct entry_TBC_state * const state)
+{
+    static const uint8_t rotations[5][2] = {
+        {8, 16}, {4, 5} {7, 13}, {41, 19}, {8, 32}
+    };
+
+    static const uint8_t indices[5][2] = {
+        {0, 1}, {7, 5}, {3, 8}, {2, 4}, {2, 7}
+    };
+
+    uint_fast8_t idx;
+
+    for (idx = 0; idx < 8; idx++) {
+        state->keySchedule[idx] = state->key[idx];
+    }
+
+    for (idx = 0; idx < 5; idx++) {
+        state->keySchedule[9 + idx]  = ROL64(state->key[indices[idx][0]], rotations[idx][0]);
+        state->keySchedule[9 + idx] ^= ROL64(state->key[indices[idx][1]], rotations[idx][1]);
+    }
+
+}
+
+/* Requirement A.6 */
+void entry_TBC_ENC(struct entry_TBC_state * const state)
+{
+    static const uint64_t blockInitializers[8] = {
+        0, 1, 2, 3, 4, 5, 6, 7
+    };
+
+    static const uint8_t rotations[8] = {
+        13, 5, 31, 23, 29, 53, 17, 37
+    };
+
+    uint_fast8_t roundIdx, blockWordIdx, nonceWordIdx, keyWordIdx;
+
+    entry_TBC_runKeySchedule(state);
+
+    nonceWordIdx = 0;
+    for (blockWordIdx = 0; blockWordIdx < 8; blockWordIdx++) {
+        state->ciphertext[blockWordIdx] = state->plaintext[blockWordIdx] ^ state->nonce[nonceWordIdx] ^ blockInitializers[blockWordIdx];
+        nonceWordIdx++; nonceWordIdx %= 3;
+    }
+
+    keyWordIdx = 0;
+    for (roundIdx = 0; roundIdx < ENTRY_TBC_NUMBER_OF_ROUNDS; roundIdx++) {
+        for (blockWordIdx = 0; blockWordIdx < 8; blockWordIdx += 2) {
+            state->ciphertext[blockWordIdx] += state->ciphertext[blockWordIdx + 1] + state->keySchedule[keyWordIdx]; keyWordIdx++; keyWordIdx %= 13;
+            state->ciphertext[blockWordIdx]  = ROL64(state->ciphertext[blockWordIdx], rotations[blockWordIdx]);
+        }
+        for (blockWordIdx = 1; blockWordIdx < 8; blockWordIdx += 2) {
+            state->ciphertext[blockWordIdx] += state->ciphertext[blockWordIdx + 1] + state->keySchedule[keyWordIdx]; keyWordIdx++; keyWordIdx %= 13;
+            state->ciphertext[blockWordIdx]  = ROL64(state->ciphertext[blockWordIdx], rotations[blockWordIdx]);
+        }
+    }
+
+    for (blockWordIdx = 0; blockWordIdx < 8; blockWordIdx++) {
+        state->ciphertext[blockWordIdx] ^= state->key[blockWordIdx];
+    }
+
+    puts("DEBUG: Ciphertext:");
+    for (blockWordIdx = 0; blockWordIdx < 8; blockWordIdx++) {
+        printf(" 0x%.16" PRIx64, state->ciphertext[blockWordIdx]);
+    }
+    putchar('\n');
+
+}
+
+/* Requirement A.7 */
+void entry_TBC_DEC(struct entry_TBC_state * const state)
+{
+
+    static const uint64_t blockInitializers[8] = {
+        0, 1, 2, 3, 4, 5, 6, 7
+    };
+
+    static const uint8_t rotations[8] = {
+        13, 5, 31, 23, 29, 53, 17, 37
+    };
+
+    uint_fast8_t roundIdx, blockWordIdx, nonceWordIdx, keyWordIdx;
+
+    entry_TBC_runKeySchedule(state);
+
+    for (blockWordIdx = 0; blockWordIdx < 8; blockWordIdx++) {
+        state->plaintext[blockWordIdx] = state->ciphertext[blockWordIdx] ^ state->key[blockWordIdx];
+    }
+
+    keyWordIdx = 0;
+    for (roundIdx = 0; roundIdx < ENTRY_TBC_NUMBER_OF_ROUNDS; roundIdx++) {
+        for (blockWordIdx = 1; blockWordIdx < 8; blockWordIdx += 2) {
+            state->ciphertext[blockWordIdx] -= state->ciphertext[blockWordIdx + 1] + state->keySchedule[keyWordIdx]; keyWordIdx++; keyWordIdx %= 13;
+            state->ciphertext[blockWordIdx]  = ROR64(state->ciphertext[blockWordIdx], rotations[blockWordIdx]);
+        }
+        for (blockWordIdx = 0; blockWordIdx < 8; blockWordIdx += 2) {
+            state->ciphertext[blockWordIdx] -= state->ciphertext[blockWordIdx + 1] + state->keySchedule[keyWordIdx]; keyWordIdx++; keyWordIdx %= 13;
+            state->ciphertext[blockWordIdx]  = ROR64(state->ciphertext[blockWordIdx], rotations[blockWordIdx]);
+        }
+    }
+
+    for (blockWordIdx = 0; blockWordIdx < 8; blockWordIdx++) {
+        state->plaintext[blockWordIdx] ^= state->nonce[nonceWordIdx] ^ blockInitializers[blockWordIdx];
+        nonceWordIdx++; nonceWordIdx %= 3;
+    }
+
+    puts("DEBUG: Plaintext:");
+    for (blockWordIdx = 0; blockWordIdx < 8; blockWordIdx++) {
+        printf(" 0x%.16" PRIx64, state->plaintext[blockWordIdx]);
+    }
+    putchar('\n');
+
+}
