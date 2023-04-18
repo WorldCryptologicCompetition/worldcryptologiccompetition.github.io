@@ -27,7 +27,7 @@ struct entry_TSC_state
 };
 
 /* Requirement C.6 */
-void entry_TSC_produceStream(struct entry_EN_state * const state)
+void entry_TSC_produceStream(struct entry_TSC_state * const state)
 {
 
     static const uint64_t initializers[5] = { 1, 2, 3, 4, 5 };
