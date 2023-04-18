@@ -35,6 +35,7 @@ void entry_EN_produceStream(struct entry_EN_state * const state)
     uint_fast8_t idx, roundIdx;
     uint_fast64_t numberOfWordsToGenerate;
     uint_fast64_t outputIdx;
+    uint_fast64_t counter;
 
     numberOfWordsToGenerate = ceill( (long double)state->outputStreamLengthInBits / (long double)64 );
 
@@ -44,13 +45,15 @@ void entry_EN_produceStream(struct entry_EN_state * const state)
         A[idx] = state->key[idx % 8] + state->nonce[idx % 3] + initializers[idx % 5];
     }
 
+    counter = 0;
     for (outputIdx = 0; outputIdx < numberOfWordsToGenerate; outputIdx++) {
         for (roundIdx = 0; roundIdx < ENTRY_TSC_NUMBER_OF_ROUNDS; roundIdx++) {
             for (idx = 0; idx < 113; idx++) {
                 A[idx] += A[(idx + 112) % 113];
                 A[idx]  = ROL64(A[idx], 23);
-                A[idx] += A[(idx + 47) % 113] + A[(idx + 83) % 113];
+                A[idx] += A[(idx + 47) % 113] + A[(idx + 83) % 113] + counter;
                 A[idx]  = ROL64(A[idx], 19);
+                counter++;
             }
         }
         state->outputStream[outputIdx] = A[112];
