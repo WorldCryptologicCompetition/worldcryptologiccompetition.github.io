@@ -56,7 +56,7 @@ void entry_TSC_produceStream(struct entry_TSC_state * const state)
                 counter++;
             }
         }
-        state->outputStream[outputIdx] = A[112];
+        state->outputStream[outputIdx] = state->A[112];
     }
 
 }
