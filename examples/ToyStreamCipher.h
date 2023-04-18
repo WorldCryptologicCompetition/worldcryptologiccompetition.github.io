@@ -5,6 +5,9 @@
 
 #include <stdio.h>
 
+#include <math.h>
+#include <stdlib.h>
+
 #include "WCC_2023.h"
 
 /*
