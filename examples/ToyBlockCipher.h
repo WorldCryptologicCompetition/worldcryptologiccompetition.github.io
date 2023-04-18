@@ -91,13 +91,13 @@ void entry_TBC_ENC(struct entry_TBC_state * const state)
     keyWordIdx = 0;
     for (roundIdx = 0; roundIdx < ENTRY_TBC_NUMBER_OF_ROUNDS; roundIdx++) {
         for (blockWordIdx = 0; blockWordIdx < 8; blockWordIdx += 2) {
-            state->ciphertext[blockWordIdx] += state->ciphertext[blockWordIdx + 1];
+            state->ciphertext[blockWordIdx] += state->ciphertext[(blockWordIdx + 1) % 8];
             state->ciphertext[blockWordIdx] += state->nonce[nonceWordIdx]; nonceWordIdx++; nonceWordIdx %= 3;
             state->ciphertext[blockWordIdx] += state->keySchedule[keyWordIdx]; keyWordIdx++; keyWordIdx %= 13;
             state->ciphertext[blockWordIdx]  = ROL64(state->ciphertext[blockWordIdx], rotations[blockWordIdx]);
         }
         for (blockWordIdx = 1; blockWordIdx < 8; blockWordIdx += 2) {
-            state->ciphertext[blockWordIdx] += state->ciphertext[blockWordIdx + 1];
+            state->ciphertext[blockWordIdx] += state->ciphertext[(blockWordIdx + 1) % 8];
             state->ciphertext[blockWordIdx] += state->nonce[nonceWordIdx]; nonceWordIdx++; nonceWordIdx %= 3;
             state->ciphertext[blockWordIdx] += state->keySchedule[keyWordIdx]; keyWordIdx++; keyWordIdx %= 13;
             state->ciphertext[blockWordIdx]  = ROL64(state->ciphertext[blockWordIdx], rotations[blockWordIdx]);
